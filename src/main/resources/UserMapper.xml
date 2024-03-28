@@ -55,7 +55,7 @@
         map参数，#{}内属性名
     -->
     <insert id="addUser">
-        insert into user
+        insert into user (id,userName,userPassword,userPhone,userMail)
         values (#{id}, #{userName}, #{userPassword}, #{userPhone}, #{userMail});
     </insert>
 
