@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace名称空间-->
+<!--用来关联，映射文件（XML）和接口文件，即接口的类路径-->
+<mapper namespace="com.zhy.javaEnd.mapper.UserMapper">
+
+    <cache/>
+    <!--
+    select标签，用于执行查询语句
+    id：是接口中的方法名
+    resultType:返回的结果类型，是接口对应方法的返回值
+    [现在只写user会报错，要写完整路径]
+    #{id}就相当于之前的预处理,会自动给此处赋值，其实就是接口方法的参数列表的值，会传给#{id}
+    查询返回的结果集，会自动封装到resultType指定的对象！！
+    ORM自动封装的前提：查询返回的列名和实体类的属于对应，才能封装成功
+    对应的实体类应该得于所查的表字段对应得上啊
+    -->
+    <select id="findUserById" resultType="User">
+        select *
+        from tjrac.user
+        where id = #{id}
+    </select>
+
+    <select id="findAll" resultType="User">
+        select *
+        from tjrac.user
+    </select>
+    <!--默认不支持传入多个参数，传入多个参数时，有以下方案二选一
+        1.#{}按顺序写param1,param2,...
+        2.在接口方法添加注解
+    -->
+    <select id="findUserByLogin" resultType="User">
+        select *
+        from tjrac.user
+        where userName = #{username}
+          and userPassword = #{password}
+    </select>
+
+    <select id="findUserByLoginMap" resultType="User">
+        select *
+        from user
+        where userName = #{usernameKey}
+          and userPassword = #{passwordKey}
+    </select>
+
+    <!--
+        执行插入语句的标签是insert
+        id是方法名
+        参数类型 parameterType = "" 可以省略
+        没有指定返回类型，默认返回受影响的行数
+        单参数随便写，
+        多参数，要么固定，要么注解
+        map参数，#{}内属性名
+    -->
+    <insert id="addUser">
+        insert into user (id,userName,userPassword,userPhone,userMail)
+        values (#{id}, #{userName}, #{userPassword}, #{userPhone}, #{userMail});
+    </insert>
+
+
+    <update id="updateUser">
+        update user
+        set userName=#{userName},
+            userPassword= #{userPassword},
+            userPhone = #{userPhone},
+            userMail = #{userMail}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUser">
+        delete
+        from user
+        where id = #{id}
+    </delete>
+</mapper>
